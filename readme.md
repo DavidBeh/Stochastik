@@ -15,7 +15,7 @@ Bei der Installation muss das .Net desktop Enviroment Workload ausgewählt werde
 Um das Projekt nach der Installation schnell zu öffnen, am besten auf den *Open In Visual Studio* Knopf hier auf der Website drücken (sollte
 spätestens nach Neustart des Computers in Chrome auftauchen)
 
-![](Screenshot 2022-07-01 190653.png)
+![](https://i.imgur.com/mPdlPPW.png)
 
 ## Beispiel
 
