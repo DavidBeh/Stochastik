@@ -1,7 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using AngouriMath;
+using AngouriMath.Core;
 using Stochastik;
-
+/*
 Menge<int> omega = new Menge<int>(new[] { 1, 2, 3, 4, 5, 6 });
 
 Menge<int> gerade = omega.ErstelleTeilmenge(omega.Where(i => i % 2 == 0));
@@ -15,3 +17,10 @@ gerade.Ausgeben("gerade");
 (gerade & primzahl).Ausgeben("g ges p");
 (!primzahl).Ausgeben("gegener p");
 (primzahl ^ gerade).Ausgeben("entw p oder g");
+
+*/
+
+Entity n = "g = o - t";
+
+
+Console.WriteLine(n.Solve("b"));
