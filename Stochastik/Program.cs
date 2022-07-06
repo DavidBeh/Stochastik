@@ -1,8 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using AngouriMath;
+using static AngouriMath.MathS;
+using static AngouriMath.Entity;
 using AngouriMath.Core;
 using Stochastik;
+
 /*
 Menge<int> omega = new Menge<int>(new[] { 1, 2, 3, 4, 5, 6 });
 
@@ -20,7 +23,15 @@ gerade.Ausgeben("gerade");
 
 */
 
-Entity n = "g = o - t";
 
+Variable a1 = Var("a");
+Variable b1 = Var(Guid.NewGuid());
 
-Console.WriteLine(n.Solve("b"));
+Entity f = a1 + b1;
+var s = f.Substitute(a1, 1);
+var s1 = f.Substitute(b1, 2);
+
+var j = 
+Console.WriteLine(f);
+Console.WriteLine(s);
+Console.WriteLine(Guid.NewGuid().ToString());
