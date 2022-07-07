@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using AngouriMath;
-using static AngouriMath.MathS;
+
 using static AngouriMath.Entity;
 using AngouriMath.Core;
 using Stochastik;
@@ -22,15 +22,16 @@ gerade.Ausgeben("gerade");
 (primzahl ^ gerade).Ausgeben("entw p oder g");
 
 */
-var v = MathS.Var("(N33)");
-
-var a = new EreignisVar("a");
-var b = new EreignisVar("b");
-
-Char c = 'd';
 
 
+Console.WriteLine("U\u0305");
+return;
+EreignisVar a = new EreignisVar('A');
+EreignisVar b = new EreignisVar('B');
+EreignisVar c = new EreignisVar('C');
 
-//var g = a & b  & c;
+var g = a & (b | c);
 
 Console.WriteLine(g.ToAngouri());
+
+Console.WriteLine(Ereignis.FromAngouri(g.ToAngouri()));

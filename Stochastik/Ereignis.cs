@@ -1,11 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
 using AngouriMath;
+using static AngouriMath.Entity;
 
 namespace Stochastik;
 
-public abstract class Ereignis
+public abstract record Ereignis
 {
     public abstract Entity ToAngouri();
+    public static ConditionalWeakTable<Entity, EreignisVar> Table;
 
     public static Ereignis operator &(Ereignis a, Ereignis b)
     {
@@ -22,31 +24,43 @@ public abstract class Ereignis
     {
         return new Negierung(a);
     }
+
+    public static Ereignis FromAngouri(Entity f) =>
+        f switch
+        {
+            Variable ereignis => new EreignisVar(ereignis.Name[0]),
+            Andf sum => FromAngouri(sum.Left) & FromAngouri(sum.Right),
+            Orf orf => FromAngouri(orf.Left) | FromAngouri(orf.Right),
+            Impliesf i => !FromAngouri(i.Assumption) | FromAngouri(i.Conclusion),
+            Notf not => !FromAngouri(not),
+            _ => throw new NotImplementedException(
+                $"Ereignis from Entity of type {f.GetType()} with representation {f.ToString()} is not implemented")
+        };
 }
 
-public class EreignisVar : Ereignis
+public record EreignisVar : Ereignis
 {
-    private readonly string _symbol = null!;
+    public readonly char Symbol;
 
-    protected ConditionalWeakTable<Entity, EreignisVar> EntityTable;
 
-    public EreignisVar(string symbol)
+    public EreignisVar(char symbol)
     {
-        _symbol = symbol;
+        if (symbol < 65 || symbol > 90)
+            throw new ArgumentException($"Only upper case letters A-Z (utf32 65-90) are accepted. Provided: {symbol}",
+                nameof(symbol));
+
+        Symbol = symbol;
     }
 
-    public override string ToString()
-    {
-        return _symbol;
-    }
+    public override string ToString() => Symbol.ToString();
 
     public override Entity ToAngouri()
     {
-        return MathS.Var("N" + Guid.NewGuid().ToString("N"));
+        return MathS.Var(Symbol.ToString());
     }
 }
 
-public class Schnittmenge : Ereignis
+public record Schnittmenge : Ereignis
 {
     public readonly Ereignis Links;
     public readonly Ereignis Rechts;
@@ -60,11 +74,11 @@ public class Schnittmenge : Ereignis
 
     public override Entity ToAngouri()
     {
-        return new Entity.Sumf(Links.ToAngouri(), Rechts.ToAngouri());
+        return new Andf(Links.ToAngouri(), Rechts.ToAngouri());
     }
 }
 
-public class Vereinigungsmenge : Ereignis
+public record Vereinigungsmenge : Ereignis
 {
     public readonly Ereignis Links;
     public readonly Ereignis Rechts;
@@ -78,21 +92,26 @@ public class Vereinigungsmenge : Ereignis
 
     public override Entity ToAngouri()
     {
-        return new Entity.Orf(Links.ToAngouri(), Rechts.ToAngouri());
+        return new Orf(Links.ToAngouri(), Rechts.ToAngouri());
     }
 }
 
-public class Negierung : Ereignis
+public record Negierung : Ereignis
 {
-    public readonly Ereignis Kind;
+    public Ereignis Kind { get; init; }
 
     public Negierung(Ereignis kind)
     {
         Kind = kind;
     }
 
+    public override string ToString()
+    {
+        return $"!{Kind is EreignisVar ? Kind.ToString() : }"
+    }
+
     public override Entity ToAngouri()
     {
-        return new Entity.Notf(Kind.ToAngouri());
+        return new Notf(Kind.ToAngouri());
     }
 }
