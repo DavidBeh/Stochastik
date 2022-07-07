@@ -22,16 +22,15 @@ gerade.Ausgeben("gerade");
 (primzahl ^ gerade).Ausgeben("entw p oder g");
 
 */
+var v = MathS.Var("(N33)");
+
+var a = new EreignisVar("a");
+var b = new EreignisVar("b");
+
+Char c = 'd';
 
 
-Variable a1 = Var("a");
-Variable b1 = Var(Guid.NewGuid());
 
-Entity f = a1 + b1;
-var s = f.Substitute(a1, 1);
-var s1 = f.Substitute(b1, 2);
+//var g = a & b  & c;
 
-var j = 
-Console.WriteLine(f);
-Console.WriteLine(s);
-Console.WriteLine(Guid.NewGuid().ToString());
+Console.WriteLine(g.ToAngouri());

@@ -3,33 +3,16 @@ using AngouriMath;
 
 namespace Stochastik;
 
-public class Ereignis
+public abstract class Ereignis
 {
-    private readonly string _symbol = null!;
-
-    protected ConditionalWeakTable<Entity, Ereignis> EntityTable;
-
-    public Ereignis(string symbol)
-    {
-        _symbol = symbol;
-    }
-
-    public override string ToString()
-    {
-        return _symbol;
-    }
-
-    protected Ereignis()
-    {
-        
-    }
-    
-    
+    public abstract Entity ToAngouri();
 
     public static Ereignis operator &(Ereignis a, Ereignis b)
     {
         return new Schnittmenge(a, b);
     }
+
+
     public static Ereignis operator |(Ereignis a, Ereignis b)
     {
         return new Vereinigungsmenge(a, b);
@@ -39,50 +22,77 @@ public class Ereignis
     {
         return new Negierung(a);
     }
+}
 
-    public virtual Entity ToAngouriEntity()
+public class EreignisVar : Ereignis
+{
+    private readonly string _symbol = null!;
+
+    protected ConditionalWeakTable<Entity, EreignisVar> EntityTable;
+
+    public EreignisVar(string symbol)
     {
-        return MathS.Var("E" + Guid.NewGuid().ToString("N"));
+        _symbol = symbol;
+    }
+
+    public override string ToString()
+    {
+        return _symbol;
+    }
+
+    public override Entity ToAngouri()
+    {
+        return MathS.Var("N" + Guid.NewGuid().ToString("N"));
     }
 }
 
 public class Schnittmenge : Ereignis
 {
-    public readonly Ereignis A;
-    public readonly Ereignis B;
-    
-    public Schnittmenge(Ereignis a, Ereignis b)
+    public readonly Ereignis Links;
+    public readonly Ereignis Rechts;
+
+    public Schnittmenge(Ereignis links, Ereignis rechts)
     {
-        A = a;
-        B = b;
+        Links = links;
+        Rechts = rechts;
     }
 
 
-    public override Entity ToAngouriEntity()
+    public override Entity ToAngouri()
     {
-        return base.ToAngouriEntity();
+        return new Entity.Sumf(Links.ToAngouri(), Rechts.ToAngouri());
     }
 }
 
 public class Vereinigungsmenge : Ereignis
 {
-    public readonly Ereignis A;
-    public readonly Ereignis B;
-    
-    
-    public Vereinigungsmenge(Ereignis a, Ereignis b)
+    public readonly Ereignis Links;
+    public readonly Ereignis Rechts;
+
+
+    public Vereinigungsmenge(Ereignis links, Ereignis rechts)
     {
-        A = a;
-        B = b;
+        Links = links;
+        Rechts = rechts;
+    }
+
+    public override Entity ToAngouri()
+    {
+        return new Entity.Orf(Links.ToAngouri(), Rechts.ToAngouri());
     }
 }
 
 public class Negierung : Ereignis
 {
-    public readonly Ereignis E;
+    public readonly Ereignis Kind;
 
-    public Vereinigungsmenge(Ereignis e)
+    public Negierung(Ereignis kind)
     {
-        E = e;
+        Kind = kind;
+    }
+
+    public override Entity ToAngouri()
+    {
+        return new Entity.Notf(Kind.ToAngouri());
     }
 }
