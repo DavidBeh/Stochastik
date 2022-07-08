@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using AngouriMath;
+using Antlr4.Runtime.Atn;
 using static AngouriMath.Entity;
 
 namespace Stochastik;
@@ -36,6 +37,20 @@ public abstract record Ereignis
             _ => throw new NotImplementedException(
                 $"Ereignis from Entity of type {f.GetType()} with representation {f.ToString()} is not implemented")
         };
+
+    public int Priority => this switch
+    {
+        EreignisVar => 5,
+        Negierung => 4,
+        Vereinigungsmenge => 3,
+        Schnittmenge => 2,
+        _ => throw new ArgumentOutOfRangeException()
+    };
+
+    public bool HasPriority(Ereignis other) => Priority < other.Priority;
+    public string ChildToStringPriority(Ereignis child) => HasPriority(child) ? $"({child})" : child.ToString();
+
+    public string ToString(Ereignis parent) => parent.ChildToStringPriority(this);
 }
 
 public record EreignisVar : Ereignis
@@ -76,6 +91,11 @@ public record Schnittmenge : Ereignis
     {
         return new Andf(Links.ToAngouri(), Rechts.ToAngouri());
     }
+    
+    public override string ToString()
+    {
+        return $"{Links.ToString(this)} & {Rechts.ToString(this)}";
+    }
 }
 
 public record Vereinigungsmenge : Ereignis
@@ -94,6 +114,11 @@ public record Vereinigungsmenge : Ereignis
     {
         return new Orf(Links.ToAngouri(), Rechts.ToAngouri());
     }
+
+    public override string ToString()
+    {
+        return $"{Links.ToString(this)} | {Rechts.ToString(this)}";
+    }
 }
 
 public record Negierung : Ereignis
@@ -107,7 +132,7 @@ public record Negierung : Ereignis
 
     public override string ToString()
     {
-        return $"!{Kind is EreignisVar ? Kind.ToString() : }"
+        return $"!{Kind.ToString(this)}";
     }
 
     public override Entity ToAngouri()
