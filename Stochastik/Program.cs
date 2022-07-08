@@ -1,9 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 using AngouriMath;
-
 using static AngouriMath.Entity;
 using AngouriMath.Core;
+using AngouriMath.Extensions;
+using HonkSharp.Functional;
 using Stochastik;
 
 /*
@@ -22,17 +23,7 @@ gerade.Ausgeben("gerade");
 (primzahl ^ gerade).Ausgeben("entw p oder g");
 
 */
- 
 
-Console.WriteLine("U\u0305");
 
-EreignisVar a = new EreignisVar('A');
-EreignisVar b = new EreignisVar('B');
-EreignisVar c = new EreignisVar('C');
 
-var g = a & (b | c);
-
-Console.WriteLine(g.ToString());
-Console.WriteLine(g.ToAngouri());
-
-Console.WriteLine(Ereignis.FromAngouri(g.ToAngouri()));
+var a = MathS.Var("A");

@@ -1,13 +1,31 @@
-﻿using AngouriMath;
+﻿using System.Collections;
+using System.Runtime.CompilerServices;
+using AngouriMath;
 
 namespace Stochastik;
 
-public class Wahrscheinlichkeit
+public class Ergebnisraum
 {
-    public void SetzeWahrscheinlichkeit(EreignisVar ereignis, Func<Wahrscheinlichkeit, decimal> func)
+
+
+
+
+    
+    
+    public void GetWahrscheinlichkeit(Ereignis e)
     {
-        _probs.Add(ereignis, func);
+        
     }
 
-    private Dictionary<EreignisVar, Func<Wahrscheinlichkeit, decimal>> _probs = new();
+    
+}
+
+public record P(Ereignis E, Ereignis? Bedingung = null) 
+{
+    static Hashtable t = new Hashtable();
+    
+    public static implicit operator Entity(P p)
+    {
+        return p.E;
+    }
 }
