@@ -1,9 +1,9 @@
 ﻿using System.Runtime.CompilerServices;
 using AngouriMath;
-using Antlr4.Runtime.Atn;
+using AngouriMath.Core;
 using static AngouriMath.Entity;
 
-namespace Stochastik;
+namespace Stochastik.Ereignis;
 
 public abstract record Ereignis
 {

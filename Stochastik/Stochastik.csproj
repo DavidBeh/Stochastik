@@ -9,11 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="AngouriMath.Experimental" Version="1.4.0-preview.3" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Ereignis" />
+      <PackageReference Include="AngouriMath" Version="1.4.0-preview.3" />
     </ItemGroup>
 
 </Project>

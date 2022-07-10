@@ -6,24 +6,16 @@ using AngouriMath.Core;
 using AngouriMath.Extensions;
 using HonkSharp.Functional;
 using Stochastik;
-
-/*
-Menge<int> omega = new Menge<int>(new[] { 1, 2, 3, 4, 5, 6 });
-
-Menge<int> gerade = omega.ErstelleTeilmenge(omega.Where(i => i % 2 == 0));
-
-Menge<int> primzahl = omega.ErstelleTeilmenge(new[] { 2, 3, 5 });
-
-omega.Ausgeben("omega");
-primzahl.Ausgeben("primzahl");
-gerade.Ausgeben("gerade");
-(gerade | primzahl).Ausgeben("g ver p");
-(gerade & primzahl).Ausgeben("g ges p");
-(!primzahl).Ausgeben("gegener p");
-(primzahl ^ gerade).Ausgeben("entw p oder g");
-
-*/
-
+using Stochastik.Ereignis;
 
 
 var a = MathS.Var("A");
+var b = MathS.Var("B");
+var c = MathS.Var("C");
+var d = MathS.Var("D");
+
+Entity n = !a | b;
+Entity m = b | !a;
+
+
+Console.WriteLine(n.VergleicheEreignisse(m));
